@@ -22,7 +22,7 @@ def make_pie_graph(requests: list[UserRequest], root_dir: Path) -> Path:
 
     values = [count_legit, count_fishing]
     labels = ['Легитимный', 'Фишинговый']
-    plt_path = root_dir / 'files' / 'graphics' / "requests_stats.png"
+    plt_path = root_dir / 'files' / 'graphics' / 'requests_stats.png'
     plt.pie(values, labels=labels, autopct='%1.1f%%')
     plt.savefig(plt_path.as_posix())
     plt.close()
@@ -44,7 +44,7 @@ def make_users_stats_graph(requests: list[UserRequest], root_dir: Path) -> Path:
         users.append(user.ip)
 
     plt.barh(users, values)
-    plt_path = root_dir / 'files' / 'graphics' / "user_stats.png"
+    plt_path = root_dir / 'files' / 'graphics' / 'user_stats.png'
     plt.savefig(plt_path)
     plt.close()
     return plt_path

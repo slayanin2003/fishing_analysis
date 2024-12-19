@@ -7,17 +7,16 @@ from PIL import Image
 
 
 def _gradio_interface() -> None:
-
     gr.set_static_paths([root_dir])
     with gr.Blocks() as iface:
-        gr.Markdown("Отчет по собранной статистике с SIEM")
+        gr.Markdown('Отчет по собранной статистике с SIEM')
 
-        csv_file = gr.File(label="Загрузить CSV файл")
-        load_button = gr.Button("Создать отчет")
+        csv_file = gr.File(label='Загрузить CSV файл')
+        load_button = gr.Button('Создать отчет')
 
         with gr.Row():
-            image1 = gr.Image(label="Процентное соотношение фишинговых запросов к легитимным")
-            image2 = gr.Image(label="Статистика фишинговых запросов по пользователям")
+            image1 = gr.Image(label='Процентное соотношение фишинговых запросов к легитимным')
+            image2 = gr.Image(label='Статистика фишинговых запросов по пользователям')
 
         load_button.click(fn=create_report, inputs=csv_file, outputs=[image1, image2])
 
