@@ -6,7 +6,7 @@ import gradio as gr
 from PIL import Image
 
 
-def _gradio_interface() -> None:
+def gradio_interface() -> None:
     gr.set_static_paths([root_dir])
     with gr.Blocks() as iface:
         gr.Markdown('Отчет по собранной статистике с SIEM')
@@ -23,7 +23,7 @@ def _gradio_interface() -> None:
     iface.launch()
 
 
-def create_report(csv_file: Path) -> tuple[Image.Image, Image.Image]:
+def _create_report(csv_file: Path) -> tuple[Image.Image, Image.Image]:
     requests = get_stats_from_csv(Path(csv_file), root_dir)
     path_to_requests_stats = make_pie_graph(requests, root_dir)
     path_to_users_stats = make_users_stats_graph(requests, root_dir)
@@ -34,10 +34,6 @@ def create_report(csv_file: Path) -> tuple[Image.Image, Image.Image]:
     return requests_stats_image, users_stats_image
 
 
-def fishing_analysis():
-    _gradio_interface()
-
-
 if __name__ == '__main__':
     root_dir = Path(__file__).parent.parent.absolute()
-    fishing_analysis()
+    gradio_interface()
