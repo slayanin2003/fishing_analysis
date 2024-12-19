@@ -1,8 +1,11 @@
+from pathlib import Path
+
 from fishing_analysis.types_module import UserRequest, UserFishingStats
 import matplotlib.pyplot as plt
+from fishing_analysis.__main__ import root_dir
 
 
-def _create_users_stats(requests: list[UserRequest]) -> list[UserFishingStats]:
+def _create_users_list(requests: list[UserRequest]) -> list[UserFishingStats]:
     user_stats = []
     for request in requests:
         user_stats.append(UserFishingStats(request.ip, 0))
@@ -21,11 +24,14 @@ def make_pie_graph(requests: list[UserRequest]) -> None:
     values = [count_legit, count_fishing]
     labels = ['Легитимный', 'Фишинговый']
     plt.pie(values, labels=labels, autopct='%1.1f%%')
-    plt.show()
+
+    plt_path = root_dir / 'graphics' / "Статистика запросов.png"
+    plt.savefig(plt_path)
+    return plt_path
 
 
-def make_users_stats_graph(requests: list[UserRequest]) -> None:
-    user_request_stats = _create_users_stats(requests)
+def make_users_stats_graph(requests: list[UserRequest]) -> Path:
+    user_request_stats = _create_users_list(requests)
     for user in user_request_stats:
         for user_request in requests:
             if user.ip == user_request.ip and user_request.valid == 1:
@@ -39,4 +45,11 @@ def make_users_stats_graph(requests: list[UserRequest]) -> None:
         users.append(user.ip)
 
     plt.barh(users, values)
-    plt.show()
+    plt_path = root_dir / 'graphics' / "Статистика пользователей.png"
+    plt.savefig(plt_path)
+    return plt_path
+
+def create_report(requests: list[UserRequest]) -> list[Path]:
+    path_to_requests_stats = make_users_stats_graph(requests)
+    path_to_users_stats = make_users_stats_graph(requests)
+    return [path_to_requests_stats, path_to_users_stats]
