@@ -9,7 +9,7 @@ from PIL import Image
 def gradio_interface() -> None:
     gr.set_static_paths([root_dir])
     with gr.Blocks() as iface:
-        gr.Markdown('Отчет по собранной статистике с SIEM')
+        gr.Markdown('# Отчет по собранной статистике с SIEM')
 
         csv_file = gr.File(label='Загрузить CSV файл')
         load_button = gr.Button('Создать отчет')
