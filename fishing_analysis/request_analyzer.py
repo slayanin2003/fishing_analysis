@@ -17,9 +17,9 @@ def load_requests_from_csv(file_path: Path) -> list[UserRequest]:
     return requests
 
 
-def analyze_requests(requests: list[UserRequest]) -> None:
+def analyze_requests(requests: list[UserRequest], root_path: Path) -> None:
     for request in requests:
-        prediction = predict(request.url)
+        prediction = predict(request.url, root_path)
         request.valid = 0 if prediction == "Легитимный" else 1 # 0 - Легитимный, 1 - Фишинговый
 
 
