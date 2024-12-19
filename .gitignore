@@ -2,3 +2,5 @@
 .idea
 Нейросеть славы
 */__pycache__/*
+files/graphics
+fishing_analysis/.gradio
