@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import numpy as np
+
 from fishing_analysis.types_module import UserRequest, UserFishingStats
 import matplotlib.pyplot as plt
 
@@ -23,7 +25,7 @@ def make_pie_graph(requests: list[UserRequest], root_dir: Path) -> Path:
     values = [count_legit, count_fishing]
     labels = ['Легитимные запросы', 'Фишинговые запросы']
     plt_path = root_dir / 'files' / 'graphics' / 'requests_stats.png'
-    plt.pie(values, labels=labels, autopct='%1.1f%%')
+    plt.pie(values, labels=labels, autopct='%1.1f%%', colors=['b', 'r'])
     plt.savefig(plt_path.as_posix())
     plt.close()
     return plt_path
@@ -43,8 +45,9 @@ def make_users_stats_graph(requests: list[UserRequest], root_dir: Path) -> Path:
         values.append(user.count_fishing_requests)
         users.append(user.ip)
 
+    colors = plt.cm.Reds(np.linspace(0.5, 1, len(values)))
     plt.figure(figsize=(12, 8))
-    plt.barh(users, values)
+    plt.barh(users, values, color=colors)
     plt_path = root_dir / 'files' / 'graphics' / 'user_stats.png'
     plt.savefig(plt_path)
     plt.close()
