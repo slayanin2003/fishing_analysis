@@ -43,6 +43,7 @@ def make_users_stats_graph(requests: list[UserRequest], root_dir: Path) -> Path:
         values.append(user.count_fishing_requests)
         users.append(user.ip)
 
+    plt.figure(figsize=(12, 8))
     plt.barh(users, values)
     plt_path = root_dir / 'files' / 'graphics' / 'user_stats.png'
     plt.savefig(plt_path)
