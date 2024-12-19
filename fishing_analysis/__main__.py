@@ -18,7 +18,7 @@ def gradio_interface() -> None:
             image1 = gr.Image(label='Процентное соотношение фишинговых запросов к легитимным')
             image2 = gr.Image(label='Статистика фишинговых запросов по пользователям')
 
-        load_button.click(fn=create_report, inputs=csv_file, outputs=[image1, image2])
+        load_button.click(fn=_create_report, inputs=csv_file, outputs=[image1, image2])
 
     iface.launch()
 
