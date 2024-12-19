@@ -23,13 +23,14 @@ def analyze_requests(requests: list[UserRequest]) -> None:
         request.valid = 0 if prediction == "Легитимный" else 1 # 0 - Легитимный, 1 - Фишинговый
 
 
-def request_analysis(csv_path: Path) -> None:
+def request_analysis(csv_path: Path, root_path: Path) -> None:
     requests = load_requests_from_csv(csv_path)
-    analyze_requests(requests)
+    analyze_requests(requests, root_path)
     for request in requests:
         print(request.ip, request.url, request.valid)
 
 
 if __name__ == '__main__':
+    root_dir = Path(__file__).parent.parent.absolute()
     csv_file = Path("../files/siem_log.csv")
-    request_analysis(csv_file)
+    request_analysis(csv_file, root_dir)

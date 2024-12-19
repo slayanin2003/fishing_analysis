@@ -66,9 +66,9 @@ def extract_features(url):
     ]
 
 
-def predict(url):
+def predict(url, root_dir: Path):
 
-    path_to_model = Path("/home/pchola/Рабочий стол/fishing_analysis/neural_network/model.pickle.dat")
+    path_to_model = Path(root_dir / "/neural_network/model.pickle.dat")
 
     # Загружаем обученную модель из файла
     with open(path_to_model.as_posix(), 'rb') as file:
