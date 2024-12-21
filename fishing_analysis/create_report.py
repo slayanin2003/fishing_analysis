@@ -11,8 +11,11 @@ import matplotlib.pyplot as plt
 
 def _create_users_list(requests: list[UserRequest]) -> list[UserFishingStats]:
     user_stats = []
+    already_users = []
     for request in requests:
-        user_stats.append(UserFishingStats(request.ip, 0))
+        if request.ip not in already_users:
+            user_stats.append(UserFishingStats(request.ip, 0))
+            already_users.append(request.ip)
 
     for user in user_stats:
         for user_request in requests:
@@ -25,8 +28,11 @@ def _create_users_list(requests: list[UserRequest]) -> list[UserFishingStats]:
 
 def _count_requests(requests: list[UserRequest]) -> list[RequestCounter]:
     request_count = []
+    already_requests = []
     for request in requests:
-        request_count.append(RequestCounter(request.url, 0))
+        if request.url not in already_requests:
+            request_count.append(RequestCounter(request.url, 0))
+            already_requests.append(request.url)
 
     for req in request_count:
         for request in requests:
