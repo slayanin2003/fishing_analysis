@@ -4,8 +4,12 @@ import pandas as pd
 from pandas.core.interchange.dataframe_protocol import DataFrame
 
 from fishing_analysis.request_analyzer import get_stats_from_csv
-from fishing_analysis.create_report import make_users_stats_graph, make_pie_graph, make_stats_of_popular_requests, \
-    make_stats_of_user_requests
+from fishing_analysis.create_report import (
+    make_users_stats_graph,
+    make_pie_graph,
+    make_stats_of_popular_requests,
+    make_stats_of_user_requests,
+)
 import gradio as gr
 from PIL import Image
 from gradio.utils import NamedString
@@ -20,16 +24,24 @@ def gradio_interface() -> None:
         load_button = gr.Button('Создать отчет')
 
         with gr.Row():
-            requests_stats_image = gr.Image(label='Процентное соотношение фишинговых запросов к легитимным')
-            popular_requests_image = gr.Image(label="10 самых популярных запросов")
+            requests_stats_image = gr.Image(
+                label='Процентное соотношение фишинговых запросов к легитимным'
+            )
+            popular_requests_image = gr.Image(label='10 самых популярных запросов')
         users_stats_image = gr.Image(label='Статистика фишинговых запросов по пользователям')
 
-        load_button.click(fn=_create_global_report, inputs=siem_csv_file, outputs=[requests_stats_image, users_stats_image, popular_requests_image])
+        load_button.click(
+            fn=_create_global_report,
+            inputs=siem_csv_file,
+            outputs=[requests_stats_image, users_stats_image, popular_requests_image],
+        )
 
-        create_user_report = gr.Textbox(label="Введите IPv4")
-        user_report_button = gr.Button("Создать отчет по пользователю")
+        create_user_report = gr.Textbox(label='Введите IPv4')
+        user_report_button = gr.Button('Создать отчет по пользователю')
         user_report = gr.DataFrame()
-        user_report_button.click(fn=_create_user_report, inputs=[siem_csv_file, create_user_report], outputs=user_report)
+        user_report_button.click(
+            fn=_create_user_report, inputs=[siem_csv_file, create_user_report], outputs=user_report
+        )
 
     iface.launch()
 
@@ -45,6 +57,7 @@ def _create_global_report(csv_file: NamedString) -> tuple[Image.Image, Image.Ima
     popular_requests_image = Image.open(path_to_popular_requests_stats)
 
     return requests_stats_image, users_stats_image, popular_requests_image
+
 
 def _create_user_report(siem_csv_file: NamedString, user_ip: str) -> DataFrame:
     siem_df = pd.read_csv(Path(siem_csv_file))

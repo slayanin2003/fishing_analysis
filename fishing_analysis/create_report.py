@@ -42,7 +42,7 @@ def make_pie_graph(requests: list[UserRequest], root_dir: Path) -> Path:
     values = [count_legit, count_fishing]
     labels = ['Легитимные запросы', 'Фишинговые запросы']
     plt_path = root_dir / 'files' / 'graphics' / 'requests_stats.png'
-    plt.pie(values, labels=labels, autopct='%1.1f%%', colors=['#12329e', "#9e1212"])
+    plt.pie(values, labels=labels, autopct='%1.1f%%', colors=['#12329e', '#9e1212'])
     plt.savefig(plt_path.as_posix())
     plt.close()
     return plt_path
@@ -89,11 +89,12 @@ def make_stats_of_popular_requests(requests: list[UserRequest], root_dir: Path) 
 
 IP_ADDRESS = r'^((25[0-5]|2[0-4]\d|1?\d\d?)\.){3}(25[0-5]|2[0-4]\d|1?\d\d?)$'
 
+
 def make_stats_of_user_requests(siem_data: DataFrame, user_ip: str) -> DataFrame:
     if not re.match(IP_ADDRESS, user_ip):
         error_df = pd.DataFrame(columns=['SourceIP', 'InvalidIP'])
-        error_df.loc[0] = [user_ip, "Некорректный формат IPv4"]
+        error_df.loc[0] = [user_ip, 'Некорректный формат IPv4']
         return error_df
 
-    user_data = siem_data[siem_data["SourceIP"] == user_ip]
+    user_data = siem_data[siem_data['SourceIP'] == user_ip]
     return user_data
