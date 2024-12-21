@@ -97,4 +97,9 @@ def make_stats_of_user_requests(siem_data: DataFrame, user_ip: str) -> DataFrame
         return error_df
 
     user_data = siem_data[siem_data['SourceIP'] == user_ip]
+    if user_data.shape[0] == 0:
+        user_data = pd.DataFrame(columns=['SourceIP', 'NoIPInData'])
+        user_data.loc[0] = [user_ip, 'Нет информации по данному IP адресу']
+        return user_data
+
     return user_data
