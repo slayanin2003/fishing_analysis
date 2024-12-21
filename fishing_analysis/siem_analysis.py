@@ -6,7 +6,7 @@ from pandas.core.interchange.dataframe_protocol import DataFrame
 from fishing_analysis.request_analyzer import get_stats_from_csv
 from fishing_analysis.create_report import (
     make_users_stats_graph,
-    make_pie_graph,
+    make_stats_of_requests_ratio,
     make_stats_of_popular_requests,
     make_stats_of_user_requests,
 )
@@ -49,7 +49,7 @@ def gradio_interface() -> None:
 
 def _create_global_report(csv_file: NamedString) -> tuple[Image.Image, Image.Image, Image.Image]:
     requests = get_stats_from_csv(Path(csv_file), root_dir)
-    path_to_requests_stats = make_pie_graph(requests, root_dir)
+    path_to_requests_stats = make_stats_of_requests_ratio(requests, root_dir)
     path_to_users_stats = make_users_stats_graph(requests, root_dir)
     path_to_popular_requests_stats = make_stats_of_popular_requests(requests, root_dir)
 

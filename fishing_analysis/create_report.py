@@ -43,7 +43,7 @@ def _count_requests(requests: list[UserRequest]) -> list[RequestCounter]:
     return request_count
 
 
-def make_pie_graph(requests: list[UserRequest], root_dir: Path) -> Path:
+def make_stats_of_requests_ratio(requests: list[UserRequest], root_dir: Path) -> Path:
     count_fishing = 0
     count_legit = 0
     for request in requests:
@@ -55,7 +55,8 @@ def make_pie_graph(requests: list[UserRequest], root_dir: Path) -> Path:
     values = [count_legit, count_fishing]
     labels = ['Легитимные запросы', 'Фишинговые запросы']
     plt_path = root_dir / 'files' / 'graphics' / 'requests_stats.png'
-    plt.pie(values, labels=labels, autopct='%1.1f%%', colors=['#12329e', '#9e1212'])
+    plt.figure(figsize=(14, 10))
+    plt.pie(values, labels=labels, autopct='%1.1f%%', colors=['#12329e', '#9e1212'], textprops={'fontsize': 16, 'fontweight': 'bold'})
     plt.savefig(plt_path.as_posix())
     plt.close()
     return plt_path
@@ -72,7 +73,7 @@ def make_users_stats_graph(requests: list[UserRequest], root_dir: Path) -> Path:
 
     plt_path = root_dir / 'files' / 'graphics' / 'user_stats.png'
     colors = plt.cm.Reds(np.linspace(0.5, 1, len(values)))
-    plt.figure(figsize=(12, 3))
+    plt.figure(figsize=(12, 5))
     plt.barh(users, values, color=colors)
     plt.savefig(plt_path)
     plt.close()
@@ -94,8 +95,8 @@ def make_stats_of_popular_requests(requests: list[UserRequest], root_dir: Path) 
         urls_count.append(req.count_request)
 
     plt_path = root_dir / 'files' / 'graphics' / 'requests_popular.png'
-    plt.figure(figsize=(12, 8))
-    plt.pie(urls_count[:10], labels=urls[:10], autopct=lambda pct: _percent_to_values(pct, urls_count[:10]))
+    plt.figure(figsize=(14, 10))
+    plt.pie(urls_count[:10], labels=urls[:10], autopct=lambda pct: _percent_to_values(pct, urls_count[:10]), textprops={'fontsize': 12})
     plt.savefig(plt_path.as_posix())
     plt.close()
     return plt_path
