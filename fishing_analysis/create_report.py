@@ -25,7 +25,7 @@ def make_pie_graph(requests: list[UserRequest], root_dir: Path) -> Path:
     values = [count_legit, count_fishing]
     labels = ['Легитимные запросы', 'Фишинговые запросы']
     plt_path = root_dir / 'files' / 'graphics' / 'requests_stats.png'
-    plt.pie(values, labels=labels, autopct='%1.1f%%', colors=['b', 'r'])
+    plt.pie(values, labels=labels, autopct='%1.1f%%', colors=['#12329e', "#9e1212"])
     plt.savefig(plt_path.as_posix())
     plt.close()
     return plt_path
