@@ -1,6 +1,9 @@
 from pathlib import Path
+import re
 
 import numpy as np
+import pandas as pd
+from pandas import DataFrame
 
 from fishing_analysis.types_module import UserRequest, UserFishingStats, RequestCounter
 import matplotlib.pyplot as plt
@@ -82,3 +85,15 @@ def make_stats_of_popular_requests(requests: list[UserRequest], root_dir: Path) 
     plt.savefig(plt_path.as_posix())
     plt.close()
     return plt_path
+
+
+IP_ADDRESS = r'^((25[0-5]|2[0-4]\d|1?\d\d?)\.){3}(25[0-5]|2[0-4]\d|1?\d\d?)$'
+
+def make_stats_of_user_requests(data: DataFrame, user_ip: str) -> DataFrame:
+    if not re.match(IP_ADDRESS, user_ip):
+        error_df = pd.DataFrame(columns=['SourceIP', 'InvalidIP'])
+        error_df.loc[0] = [user_ip, "Некорректный формат IPv4"]
+        return error_df
+
+    user_data = data[data["SourceIP"] == user_ip]
+    return user_data
