@@ -13,11 +13,12 @@ from fishing_analysis.create_report import (
 import gradio as gr
 from PIL import Image
 from gradio.utils import NamedString
+from js_scripts import js_func
 
 
 def gradio_interface() -> None:
     gr.set_static_paths([root_dir])
-    with gr.Blocks() as iface:
+    with gr.Blocks(theme=gr.themes.Soft(), js=js_func) as iface:
         gr.Markdown('# Отчет по собранной статистике с SIEM')
 
         siem_csv_file = gr.File(label='Загрузить CSV файл')
