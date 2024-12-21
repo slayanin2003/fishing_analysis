@@ -14,11 +14,12 @@ import gradio as gr
 from PIL import Image
 from gradio.utils import NamedString
 from js_scripts import js_func
+from css_params import css
 
 
 def gradio_interface() -> None:
     gr.set_static_paths([root_dir])
-    with gr.Blocks(theme=gr.themes.Soft(), js=js_func) as iface:
+    with gr.Blocks(theme=gr.themes.Soft(), js=js_func, css=css) as iface:
         gr.Markdown('# Отчет по собранной статистике с SIEM')
 
         siem_csv_file = gr.File(label='Загрузить CSV файл')
@@ -36,6 +37,9 @@ def gradio_interface() -> None:
             inputs=siem_csv_file,
             outputs=[requests_stats_image, users_stats_image, popular_requests_image],
         )
+
+        gr.Markdown('## Посмотре активности пользователя')
+        gr.Markdown('Для просмотра активности пользователя, в поле ввода необходимо указать его адрес IPv4')
 
         create_user_report = gr.Textbox(label='Введите IPv4')
         user_report_button = gr.Button('Создать отчет по пользователю')
