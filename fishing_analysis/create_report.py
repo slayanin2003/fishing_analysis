@@ -2,7 +2,7 @@ from pathlib import Path
 
 import numpy as np
 
-from fishing_analysis.types_module import UserRequest, UserFishingStats
+from fishing_analysis.types_module import UserRequest, UserFishingStats, RequestCounter
 import matplotlib.pyplot as plt
 
 
@@ -12,6 +12,17 @@ def _create_users_list(requests: list[UserRequest]) -> list[UserFishingStats]:
         user_stats.append(UserFishingStats(request.ip, 0))
     return user_stats
 
+
+def _count_requests(requests: list[UserRequest]) -> list[RequestCounter]:
+    request_count = []
+    for request in requests:
+        request_count.append(RequestCounter(request.ip, 0))
+
+    for req in request_count:
+        for request in requests:
+            if req.url == request.url:
+                req.count_request += 1
+    return request_count
 
 def make_pie_graph(requests: list[UserRequest], root_dir: Path) -> Path:
     count_fishing = 0
@@ -52,3 +63,6 @@ def make_users_stats_graph(requests: list[UserRequest], root_dir: Path) -> Path:
     plt.savefig(plt_path)
     plt.close()
     return plt_path
+
+
+def make_stats_of_popular_requests(requests: list[UserRequest], root_dir: Path) -> Path:
