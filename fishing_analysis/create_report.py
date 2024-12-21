@@ -13,6 +13,13 @@ def _create_users_list(requests: list[UserRequest]) -> list[UserFishingStats]:
     user_stats = []
     for request in requests:
         user_stats.append(UserFishingStats(request.ip, 0))
+
+    for user in user_stats:
+        for user_request in requests:
+            if user.ip == user_request.ip and user_request.valid == 1:
+                user.count_fishing_requests += 1
+
+    user_stats.sort(key=lambda x: x.count_fishing_requests)
     return user_stats
 
 
@@ -50,12 +57,7 @@ def make_pie_graph(requests: list[UserRequest], root_dir: Path) -> Path:
 
 def make_users_stats_graph(requests: list[UserRequest], root_dir: Path) -> Path:
     user_request_stats = _create_users_list(requests)
-    for user in user_request_stats:
-        for user_request in requests:
-            if user.ip == user_request.ip and user_request.valid == 1:
-                user.count_fishing_requests += 1
 
-    user_request_stats.sort(key=lambda x: x.count_fishing_requests)
     values: list[int] = []
     users = []
     for user in user_request_stats:
