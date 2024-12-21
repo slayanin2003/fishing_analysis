@@ -16,7 +16,7 @@ def _create_users_list(requests: list[UserRequest]) -> list[UserFishingStats]:
 def _count_requests(requests: list[UserRequest]) -> list[RequestCounter]:
     request_count = []
     for request in requests:
-        request_count.append(RequestCounter(request.ip, 0))
+        request_count.append(RequestCounter(request.url, 0))
 
     for req in request_count:
         for request in requests:
@@ -72,12 +72,13 @@ def make_stats_of_popular_requests(requests: list[UserRequest], root_dir: Path) 
     request_counter = _count_requests(requests)
     urls = []
     urls_count = []
-    for req in request_counter:
+    for req in request_counter[:10]:
         urls.append(req.url)
         urls_count.append(req.count_request)
 
     plt_path = root_dir / 'files' / 'graphics' / 'requests_popular.png'
-    plt.pie(urls_count, labels=urls, autopct='%1.1f%%')
+    plt.figure(figsize=(12, 8))
+    plt.pie(urls_count, labels=urls)
     plt.savefig(plt_path.as_posix())
     plt.close()
     return plt_path
