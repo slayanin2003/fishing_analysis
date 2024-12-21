@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from fishing_analysis.request_analyzer import get_stats_from_csv
-from fishing_analysis.create_report import make_users_stats_graph, make_pie_graph
+from fishing_analysis.create_report import make_users_stats_graph, make_pie_graph, make_stats_of_popular_requests
 import gradio as gr
 from PIL import Image
 
@@ -18,20 +18,24 @@ def gradio_interface() -> None:
             image1 = gr.Image(label='Процентное соотношение фишинговых запросов к легитимным')
             image2 = gr.Image(label='Статистика фишинговых запросов по пользователям')
 
-        load_button.click(fn=_create_report, inputs=csv_file, outputs=[image1, image2])
+        image3 = gr.Image(label="Рейтинг запросов")
+
+        load_button.click(fn=_create_report, inputs=csv_file, outputs=[image1, image2, image3])
 
     iface.launch()
 
 
-def _create_report(csv_file: Path) -> tuple[Image.Image, Image.Image]:
+def _create_report(csv_file: Path) -> tuple[Image.Image, Image.Image, Image.Image]:
     requests = get_stats_from_csv(Path(csv_file), root_dir)
     path_to_requests_stats = make_pie_graph(requests, root_dir)
     path_to_users_stats = make_users_stats_graph(requests, root_dir)
+    path_to_popular_requests_stats = make_stats_of_popular_requests(requests, root_dir)
 
     requests_stats_image = Image.open(path_to_requests_stats)
     users_stats_image = Image.open(path_to_users_stats)
+    popular_requests_image = Image.open(path_to_popular_requests_stats)
 
-    return requests_stats_image, users_stats_image
+    return requests_stats_image, users_stats_image, popular_requests_image
 
 
 if __name__ == '__main__':
