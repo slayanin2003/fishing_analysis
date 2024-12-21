@@ -12,3 +12,9 @@ class UserRequest:
 class UserFishingStats:
     ip: str
     count_fishing_requests: int
+
+
+@dataclass
+class RequestCounter:
+    url: str
+    count_request: int
