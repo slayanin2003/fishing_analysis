@@ -62,26 +62,32 @@ def make_users_stats_graph(requests: list[UserRequest], root_dir: Path) -> Path:
         values.append(user.count_fishing_requests)
         users.append(user.ip)
 
-    colors = plt.cm.Reds(np.linspace(0.5, 1, len(values)))
-    plt.figure(figsize=(12, 8))
-    plt.barh(users, values, color=colors)
     plt_path = root_dir / 'files' / 'graphics' / 'user_stats.png'
+    colors = plt.cm.Reds(np.linspace(0.5, 1, len(values)))
+    plt.figure(figsize=(12, 3))
+    plt.barh(users, values, color=colors)
     plt.savefig(plt_path)
     plt.close()
     return plt_path
+
+
+def _percent_to_values(percent: float, all_values: list[int]) -> str:
+
+    absolute = round(percent * sum(all_values) / 100)
+    return f'{absolute}'
 
 
 def make_stats_of_popular_requests(requests: list[UserRequest], root_dir: Path) -> Path:
     request_counter = _count_requests(requests)
     urls = []
     urls_count = []
-    for req in request_counter[:10]:
+    for req in request_counter:
         urls.append(req.url)
         urls_count.append(req.count_request)
 
     plt_path = root_dir / 'files' / 'graphics' / 'requests_popular.png'
     plt.figure(figsize=(12, 8))
-    plt.pie(urls_count, labels=urls)
+    plt.pie(urls_count[:10], labels=urls[:10], autopct=lambda pct: _percent_to_values(pct, urls_count[:10]))
     plt.savefig(plt_path.as_posix())
     plt.close()
     return plt_path
