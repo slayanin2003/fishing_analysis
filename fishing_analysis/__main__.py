@@ -15,12 +15,11 @@ def gradio_interface() -> None:
         load_button = gr.Button('Создать отчет')
 
         with gr.Row():
-            image1 = gr.Image(label='Процентное соотношение фишинговых запросов к легитимным')
-            image2 = gr.Image(label='Статистика фишинговых запросов по пользователям')
+            requests_stats_image = gr.Image(label='Процентное соотношение фишинговых запросов к легитимным')
+            popular_requests_image = gr.Image(label="10 самых популярных запросов")
+        users_stats_image = gr.Image(label='Статистика фишинговых запросов по пользователям')
 
-        image3 = gr.Image(label="10 самых популярных запросов")
-
-        load_button.click(fn=_create_report, inputs=csv_file, outputs=[image1, image2, image3])
+        load_button.click(fn=_create_report, inputs=csv_file, outputs=[requests_stats_image, users_stats_image, popular_requests_image])
 
     iface.launch()
 
