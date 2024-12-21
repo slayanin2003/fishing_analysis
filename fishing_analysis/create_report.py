@@ -22,7 +22,10 @@ def _count_requests(requests: list[UserRequest]) -> list[RequestCounter]:
         for request in requests:
             if req.url == request.url:
                 req.count_request += 1
+
+    request_count.sort(key=lambda x: x.count_request, reverse=True)
     return request_count
+
 
 def make_pie_graph(requests: list[UserRequest], root_dir: Path) -> Path:
     count_fishing = 0
@@ -66,3 +69,15 @@ def make_users_stats_graph(requests: list[UserRequest], root_dir: Path) -> Path:
 
 
 def make_stats_of_popular_requests(requests: list[UserRequest], root_dir: Path) -> Path:
+    request_counter = _count_requests(requests)
+    urls = []
+    urls_count = []
+    for req in request_counter:
+        urls.append(req.url)
+        urls_count.append(req.count_request)
+
+    plt_path = root_dir / 'files' / 'graphics' / 'requests_popular.png'
+    plt.pie(urls_count, labels=urls, autopct='%1.1f%%')
+    plt.savefig(plt_path.as_posix())
+    plt.close()
+    return plt_path
